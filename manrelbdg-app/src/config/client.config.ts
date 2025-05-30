@@ -649,10 +649,10 @@ export const PARTAIJKV_CONFIG: ClientConfig = {
 // EXPORT ACTIVE CONFIG
 // ==========================================
 // Change this to the appropriate config for your client
-export const CLIENT_CONFIG = PARTAIJKV_CONFIG
+export const CLIENT_CONFIG = MANRELSBY_CONFIG
 
 // Or use environment variable
-// export const CLIENT_CONFIG = PARTAIJKV_CONFIG
+// export const CLIENT_CONFIG = MANRELSBY_CONFIG
 //   ? MANRELSBY_CONFIG 
 //   : process.env.NEXT_PUBLIC_CLIENT === 'PARTAIJKV'
 //   ? PARTAIJKV_CONFIG
