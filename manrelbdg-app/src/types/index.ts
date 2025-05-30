@@ -58,7 +58,7 @@ export interface Dapil {
   dpt?: number
   kursi?: number
   targetRelawan?: number
-  geojson?: any
+  geojson?: Record<string, unknown>
   createdAt: Date
   updatedAt: Date
 }
@@ -102,7 +102,7 @@ export interface PaginatedResponse<T> {
 }
 
 // API Response types
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean
   data?: T
   error?: string
@@ -171,5 +171,5 @@ export interface MapLayer {
   name: string
   type: 'relawan' | 'koordinator' | 'dapil'
   visible: boolean
-  data: any[]
+  data: Record<string, unknown>[]
 }

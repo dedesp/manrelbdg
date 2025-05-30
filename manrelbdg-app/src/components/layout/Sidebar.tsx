@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import { useRouter, usePathname } from 'next/navigation';
 import type { MenuProps } from 'antd';
+import { useBranding, useContent } from '@/hooks/useClientConfig';
 
 const { Sider } = Layout;
 
@@ -39,24 +40,26 @@ function getItem(
   } as MenuItem;
 }
 
-const menuItems: MenuItem[] = [
-  getItem('Dashboard', '/dashboard', <DashboardOutlined />),
-  getItem('Data Management', 'data', <TeamOutlined />, [
-    getItem('Relawan', '/data/relawan', <UserOutlined />),
-    getItem('Koordinator', '/data/koordinator', <TeamOutlined />),
-    getItem('Dapil', '/data/dapil', <EnvironmentOutlined />),
-  ]),
-  getItem('Reports & Analytics', '/reports', <BarChartOutlined />),
-  getItem('Import/Export', 'import-export', <ImportOutlined />, [
-    getItem('Import Data', '/import', <ImportOutlined />),
-    getItem('Export Data', '/export', <ExportOutlined />),
-  ]),
-  getItem('Settings', '/settings', <SettingOutlined />),
-];
-
 export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const branding = useBranding();
+  const content = useContent();
+
+  const menuItems: MenuItem[] = [
+    getItem(content.navigation.dashboard, '/dashboard', <DashboardOutlined />),
+    getItem(content.navigation.dataManagement, 'data', <TeamOutlined />, [
+      getItem(content.navigation.relawan, '/data/relawan', <UserOutlined />),
+      getItem(content.navigation.koordinator, '/data/koordinator', <TeamOutlined />),
+      getItem(content.navigation.dapil, '/data/dapil', <EnvironmentOutlined />),
+    ]),
+    getItem(content.navigation.reports, '/reports', <BarChartOutlined />),
+    getItem('Import/Export', 'import-export', <ImportOutlined />, [
+      getItem(content.navigation.import, '/import', <ImportOutlined />),
+      getItem(content.navigation.export, '/export', <ExportOutlined />),
+    ]),
+    getItem(content.navigation.settings, '/settings', <SettingOutlined />),
+  ];
 
   const handleMenuClick = ({ key }: { key: string }) => {
     if (key.startsWith('/')) {
@@ -100,18 +103,20 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
       <div className="p-4 flex items-center justify-between border-b border-gray-700">
         {!collapsed && (
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">M</span>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" 
+                 style={{ backgroundColor: branding.colors.primary }}>
+              <span className="text-white font-bold text-sm">{branding.appInitial}</span>
             </div>
             <div className="text-white">
-              <div className="font-bold text-sm">MANRELBDG</div>
-              <div className="text-xs text-gray-400">Management System</div>
+              <div className="font-bold text-sm">{branding.appName}</div>
+              <div className="text-xs text-gray-400">{branding.appTagline}</div>
             </div>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-white font-bold text-sm">M</span>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto"
+               style={{ backgroundColor: branding.colors.primary }}>
+            <span className="text-white font-bold text-sm">{branding.appInitial}</span>
           </div>
         )}
         <Button

@@ -21,6 +21,7 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -83,9 +84,13 @@ const mockKoordinatorData: KoordinatorData[] = [
 ];
 
 export default function KoordinatorPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
+
   const columns: ColumnsType<KoordinatorData> = [
     {
-      title: 'Koordinator',
+      title: terminology.koordinator,
       key: 'koordinator',
       render: (_, record) => (
         <div className="flex items-center space-x-3">
@@ -119,17 +124,17 @@ export default function KoordinatorPage() {
       ellipsis: true,
     },
     {
-      title: 'Dapil',
+      title: terminology.dapil,
       dataIndex: 'dapil',
       key: 'dapil',
       filters: [
-        { text: 'Dapil 1', value: 'Dapil 1' },
-        { text: 'Dapil 2', value: 'Dapil 2' },
-        { text: 'Dapil 3', value: 'Dapil 3' },
+        { text: `${terminology.dapil} 1`, value: 'Dapil 1' },
+        { text: `${terminology.dapil} 2`, value: 'Dapil 2' },
+        { text: `${terminology.dapil} 3`, value: 'Dapil 3' },
       ],
     },
     {
-      title: 'Jumlah Relawan',
+      title: `Jumlah ${terminology.relawanPlural}`,
       key: 'jumlahRelawan',
       render: (_, record) => (
         <div className="flex items-center space-x-2">
@@ -207,9 +212,11 @@ export default function KoordinatorPage() {
         {/* Page Header */}
         <div className="flex justify-between items-start">
           <div>
-            <Title level={2} className="mb-2">Data Koordinator</Title>
+            <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+              {content.pages.koordinator.title}
+            </Title>
             <p className="text-gray-600">
-              Kelola data koordinator dan supervisi relawan
+              {content.pages.koordinator.description}
             </p>
           </div>
           <Space>
@@ -223,8 +230,9 @@ export default function KoordinatorPage() {
               type="primary" 
               icon={<PlusOutlined />}
               onClick={handleAddNew}
+              style={{ backgroundColor: branding.colors.primary, borderColor: branding.colors.primary }}
             >
-              Tambah Koordinator
+              {content.pages.koordinator.addButtonText}
             </Button>
           </Space>
         </div>
@@ -245,7 +253,7 @@ export default function KoordinatorPage() {
           <Card size="small">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Total Relawan Dibawahi</p>
+                <p className="text-sm text-gray-500">Total {terminology.relawanPlural} Dibawahi</p>
                 <p className="text-2xl font-bold text-green-500">
                   {mockKoordinatorData.reduce((sum, k) => sum + k.jumlahRelawan, 0)}
                 </p>

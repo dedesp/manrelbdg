@@ -9,6 +9,7 @@ import {
   ProfileOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
+import { useBranding, useContent } from '@/hooks/useClientConfig';
 
 const { Header: AntHeader } = Layout;
 const { Text } = Typography;
@@ -18,6 +19,9 @@ interface HeaderProps {
 }
 
 export default function Header({}: HeaderProps) {
+  const branding = useBranding();
+  const content = useContent();
+
   const userMenuItems: MenuProps['items'] = [
     {
       key: 'profile',
@@ -27,7 +31,7 @@ export default function Header({}: HeaderProps) {
     {
       key: 'settings',
       icon: <SettingOutlined />,
-      label: 'Settings',
+      label: content.navigation.settings,
     },
     {
       type: 'divider',
@@ -58,7 +62,7 @@ export default function Header({}: HeaderProps) {
     <AntHeader className="bg-white shadow-sm px-6 flex items-center justify-between">
       <div className="flex items-center">
         <Text className="text-lg font-medium text-gray-800">
-          Manajemen Relawan Bandung
+          {branding.appName}
         </Text>
       </div>
 

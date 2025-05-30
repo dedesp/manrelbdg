@@ -17,6 +17,7 @@ import {
   EnvironmentOutlined,
   TrophyOutlined,
 } from '@ant-design/icons';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title } = Typography;
 
@@ -34,14 +35,18 @@ const dashboardData = {
 };
 
 export default function DashboardPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
+
   return (
     <MainLayout>
       <div className="space-y-6">{/* remove p-6 since SimpleLayout handles padding */}
         {/* Page Header */}
         <div>
-          <Title level={2} className="mb-2">Dashboard</Title>
+          <Title level={2} className="mb-2">{content.pages.dashboard.title}</Title>
           <p className="text-gray-600">
-            Selamat datang di sistem manajemen relawan Bandung
+            {content.pages.dashboard.welcomeMessage}
           </p>
         </div>
 
@@ -50,30 +55,30 @@ export default function DashboardPage() {
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Total Relawan"
+              title={`Total ${terminology.relawanPlural}`}
               value={dashboardData.totalRelawan}
-              prefix={<UserOutlined className="text-blue-500" />}
-              valueStyle={{ color: '#1677ff' }}
+              prefix={<UserOutlined style={{ color: branding.colors.primary }} />}
+              valueStyle={{ color: branding.colors.primary }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Total Koordinator"
+              title={`Total ${terminology.koordinatorPlural}`}
               value={dashboardData.totalKoordinator}
-              prefix={<TeamOutlined className="text-green-500" />}
-              valueStyle={{ color: '#52c41a' }}
+              prefix={<TeamOutlined style={{ color: branding.colors.secondary }} />}
+              valueStyle={{ color: branding.colors.secondary }}
             />
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Total Dapil"
+              title={`Total ${terminology.dapilPlural}`}
               value={dashboardData.totalDapil}
-              prefix={<EnvironmentOutlined className="text-orange-500" />}
-              valueStyle={{ color: '#fa8c16' }}
+              prefix={<EnvironmentOutlined style={{ color: branding.colors.accent }} />}
+              valueStyle={{ color: branding.colors.accent }}
             />
           </Card>
         </Col>
@@ -120,19 +125,19 @@ export default function DashboardPage() {
           <Card title="Quick Actions" size="small">
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                <UserOutlined className="text-lg text-blue-500 mb-2" />
-                <p className="text-sm font-medium">Tambah Relawan</p>
+                <UserOutlined style={{ color: branding.colors.primary }} className="text-lg mb-2" />
+                <p className="text-sm font-medium">{content.buttons.add} {terminology.relawan}</p>
               </div>
               <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                <TeamOutlined className="text-lg text-green-500 mb-2" />
-                <p className="text-sm font-medium">Tambah Koordinator</p>
+                <TeamOutlined style={{ color: branding.colors.secondary }} className="text-lg mb-2" />
+                <p className="text-sm font-medium">{content.buttons.add} {terminology.koordinator}</p>
               </div>
               <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                <EnvironmentOutlined className="text-lg text-orange-500 mb-2" />
-                <p className="text-sm font-medium">Kelola Dapil</p>
+                <EnvironmentOutlined style={{ color: branding.colors.accent }} className="text-lg mb-2" />
+                <p className="text-sm font-medium">Kelola {terminology.dapilPlural}</p>
               </div>
               <div className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                <TrophyOutlined className="text-lg text-purple-500 mb-2" />
+                <TrophyOutlined style={{ color: branding.colors.primary }} className="text-lg mb-2" />
                 <p className="text-sm font-medium">Lihat Laporan</p>
               </div>
             </div>
@@ -143,7 +148,7 @@ export default function DashboardPage() {
       {/* Charts Row */}
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={16}>
-          <Card title="Distribusi Relawan per Dapil" size="small">
+          <Card title={`Distribusi ${terminology.relawanPlural} per ${terminology.dapil}`} size="small">
             <DapilChart />
           </Card>
         </Col>

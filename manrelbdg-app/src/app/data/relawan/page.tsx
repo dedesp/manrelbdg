@@ -19,6 +19,7 @@ import {
   FilterOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -77,6 +78,10 @@ const mockRelawanData: RelawanData[] = [
 ];
 
 export default function RelawanPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
+
   const columns: ColumnsType<RelawanData> = [
     {
       title: 'ID',
@@ -107,17 +112,17 @@ export default function RelawanPage() {
       ellipsis: true,
     },
     {
-      title: 'Dapil',
+      title: terminology.dapil,
       dataIndex: 'dapil',
       key: 'dapil',
       filters: [
-        { text: 'Dapil 1', value: 'Dapil 1' },
-        { text: 'Dapil 2', value: 'Dapil 2' },
-        { text: 'Dapil 3', value: 'Dapil 3' },
+        { text: `${terminology.dapil} 1`, value: 'Dapil 1' },
+        { text: `${terminology.dapil} 2`, value: 'Dapil 2' },
+        { text: `${terminology.dapil} 3`, value: 'Dapil 3' },
       ],
     },
     {
-      title: 'Koordinator',
+      title: terminology.koordinator,
       dataIndex: 'koordinator',
       key: 'koordinator',
     },
@@ -189,9 +194,11 @@ export default function RelawanPage() {
         {/* Page Header */}
         <div className="flex justify-between items-start">
           <div>
-            <Title level={2} className="mb-2">Data Relawan</Title>
+            <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+              {content.pages.relawan.title}
+            </Title>
             <p className="text-gray-600">
-              Kelola data relawan dan informasi pendukung
+              {content.pages.relawan.description}
             </p>
           </div>
           <Space>
@@ -205,8 +212,9 @@ export default function RelawanPage() {
               type="primary" 
               icon={<PlusOutlined />}
               onClick={handleAddNew}
+              style={{ backgroundColor: branding.colors.primary, borderColor: branding.colors.primary }}
             >
-              Tambah Relawan
+              {content.pages.relawan.addButtonText}
             </Button>
           </Space>
         </div>
@@ -216,7 +224,7 @@ export default function RelawanPage() {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <div className="flex gap-2">
               <Search
-                placeholder="Cari nama, NIK, atau No. HP..."
+                placeholder={`Cari nama ${terminology.relawan}, NIK, atau No. HP...`}
                 allowClear
                 style={{ width: 300 }}
                 onSearch={(value) => console.log('Search:', value)}
@@ -226,7 +234,7 @@ export default function RelawanPage() {
               </Button>
             </div>
             <div className="text-sm text-gray-500">
-              Total: {mockRelawanData.length} relawan
+              Total: {mockRelawanData.length} {terminology.relawanPlural}
             </div>
           </div>
         </Card>

@@ -9,6 +9,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import { useBranding } from '@/hooks/useClientConfig';
 
 interface ProgressChartProps {
   data?: Array<{
@@ -29,6 +30,8 @@ const defaultData = [
 ];
 
 export default function ProgressChart({ data = defaultData }: ProgressChartProps) {
+  const branding = useBranding();
+
   return (
     <ResponsiveContainer width="100%" height={240}>
       <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -39,7 +42,7 @@ export default function ProgressChart({ data = defaultData }: ProgressChartProps
         <Line 
           type="monotone" 
           dataKey="target" 
-          stroke="#ff4d4f" 
+          stroke={branding.colors.errorColor} 
           strokeWidth={2}
           name="Target"
           strokeDasharray="5 5"
@@ -47,7 +50,7 @@ export default function ProgressChart({ data = defaultData }: ProgressChartProps
         <Line 
           type="monotone" 
           dataKey="actual" 
-          stroke="#52c41a" 
+          stroke={branding.colors.successColor} 
           strokeWidth={2}
           name="Actual"
         />

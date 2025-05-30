@@ -9,6 +9,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
+import { useContent, useBranding } from '@/hooks/useClientConfig';
 
 interface DapilChartProps {
   data?: Array<{
@@ -29,6 +30,9 @@ const defaultData = [
 ];
 
 export default function DapilChart({ data = defaultData }: DapilChartProps) {
+  const content = useContent();
+  const branding = useBranding();
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -36,8 +40,16 @@ export default function DapilChart({ data = defaultData }: DapilChartProps) {
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
-        <Bar dataKey="relawan" fill="#1677ff" name="Relawan" />
-        <Bar dataKey="koordinator" fill="#52c41a" name="Koordinator" />
+        <Bar 
+          dataKey="relawan" 
+          fill={branding.colors.primary} 
+          name={content.terminology.relawan} 
+        />
+        <Bar 
+          dataKey="koordinator" 
+          fill={branding.colors.successColor} 
+          name={content.terminology.koordinator} 
+        />
       </BarChart>
     </ResponsiveContainer>
   );

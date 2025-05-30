@@ -22,12 +22,15 @@ import {
   SettingOutlined,
   BellOutlined,
 } from '@ant-design/icons';
+import { useContent, useBranding } from '@/hooks/useClientConfig';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 const { TextArea } = Input;
 
 export default function SettingsPage() {
+  const content = useContent();
+  const branding = useBranding();
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
 
@@ -59,9 +62,11 @@ export default function SettingsPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <Title level={2} className="mb-2">Settings</Title>
+          <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+            {content.pages.settings.title}
+          </Title>
           <p className="text-gray-600">
-            Kelola pengaturan akun dan preferensi aplikasi
+            {content.pages.settings.description}
           </p>
         </div>
 

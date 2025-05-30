@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
+import { useBranding } from '@/hooks/useClientConfig';
 
 const { Content, Footer } = Layout;
 
@@ -14,6 +15,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const branding = useBranding();
 
   // Responsive sidebar for mobile
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </Content>
         <Footer className="text-center bg-white border-t">
           <div className="text-gray-600">
-            MANRELBDG © 2024 - Sistem Manajemen Relawan Bandung
+            {branding.appName} © 2024 - {branding.appTagline}
           </div>
         </Footer>
       </Layout>

@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -68,52 +69,55 @@ const mockExportData: ExportData[] = [
   }
 ];
 
-const columns: ColumnsType<ExportData> = [
-  {
-    title: 'Nama',
-    dataIndex: 'nama',
-    key: 'nama',
-  },
-  {
-    title: 'NIK',
-    dataIndex: 'nik',
-    key: 'nik',
-  },
-  {
-    title: 'No. HP',
-    dataIndex: 'noHp',
-    key: 'noHp',
-  },
-  {
-    title: 'Dapil',
-    dataIndex: 'dapil',
-    key: 'dapil',
-  },
-  {
-    title: 'Tanggal Daftar',
-    dataIndex: 'tanggalDaftar',
-    key: 'tanggalDaftar',
-    render: (date: string) => dayjs(date).format('DD/MM/YYYY'),
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status: string) => (
-      <Tag color={status === 'Aktif' ? 'green' : 'red'}>
-        {status}
-      </Tag>
-    ),
-  },
-];
-
 export default function ExportPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
   const [dataType, setDataType] = useState('relawan');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dateRange, setDateRange] = useState<any>(null);
   const [selectedDapil, setSelectedDapil] = useState<string>('all');
   const [selectedData] = useState<ExportData[]>(mockExportData);
   const [exporting, setExporting] = useState(false);
+
+  const getColumns = (): ColumnsType<ExportData> => [
+    {
+      title: 'Nama',
+      dataIndex: 'nama',
+      key: 'nama',
+    },
+    {
+      title: 'NIK',
+      dataIndex: 'nik',
+      key: 'nik',
+    },
+    {
+      title: 'No. HP',
+      dataIndex: 'noHp',
+      key: 'noHp',
+    },
+    {
+      title: terminology.dapil,
+      dataIndex: 'dapil',
+      key: 'dapil',
+    },
+    {
+      title: 'Tanggal Daftar',
+      dataIndex: 'tanggalDaftar',
+      key: 'tanggalDaftar',
+      render: (date: string) => dayjs(date).format('DD/MM/YYYY'),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Tag color={status === 'Aktif' ? 'green' : 'red'}>
+          {status}
+        </Tag>
+      ),
+    },
+  ];
 
   const handleExport = (format: 'excel' | 'pdf') => {
     setExporting(true);
@@ -136,9 +140,11 @@ export default function ExportPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <Title level={2} className="mb-2">Export Data</Title>
+          <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+            {content.pages.export.title}
+          </Title>
           <Paragraph className="text-gray-600">
-            Export data dalam format Excel atau PDF sesuai dengan filter yang ditentukan
+            {content.pages.export.description}
           </Paragraph>
         </div>
 
@@ -152,9 +158,9 @@ export default function ExportPage() {
                 onChange={setDataType}
                 className="w-full"
               >
-                <Option value="relawan">Relawan</Option>
-                <Option value="koordinator">Koordinator</Option>
-                <Option value="dapil">Dapil</Option>
+                <Option value="relawan">{terminology.relawanPlural}</Option>
+                <Option value="koordinator">{terminology.koordinatorPlural}</Option>
+                <Option value="dapil">{terminology.dapilPlural}</Option>
               </Select>
             </Col>
             
@@ -283,7 +289,7 @@ export default function ExportPage() {
           }
         >
           <Table
-            columns={columns}
+            columns={getColumns()}
             dataSource={selectedData}
             pagination={{ 
               pageSize: 10,

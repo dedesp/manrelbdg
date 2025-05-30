@@ -4,27 +4,24 @@ import { Breadcrumb as AntBreadcrumb } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-
-interface BreadcrumbItem {
-  title: string | React.ReactNode;
-  href?: string;
-}
+import { useContent, useTerminology } from '@/hooks/useClientConfig';
 
 export default function Breadcrumb() {
   const pathname = usePathname();
+  const content = useContent();
+  const terminology = useTerminology();
 
-  const getBreadcrumbItems = (): BreadcrumbItem[] => {
+  const getBreadcrumbItems = () => {
     const pathSegments = pathname.split('/').filter(segment => segment);
     
-    const items: BreadcrumbItem[] = [
+    const items = [
       {
         title: (
           <Link href="/dashboard" className="flex items-center">
             <HomeOutlined className="mr-1" />
-            Dashboard
+            {content.navigation.dashboard}
           </Link>
         ),
-        href: '/dashboard',
       },
     ];
 
@@ -43,33 +40,33 @@ export default function Breadcrumb() {
         return;
       }
 
-      let title = segment;
+      let title: string | React.ReactNode = segment;
       
-      // Convert segment to readable format
+      // Convert segment to readable format using client configuration
       switch (segment) {
         case 'data':
-          title = 'Data Management';
+          title = content.navigation.dataManagement;
           break;
         case 'relawan':
-          title = 'Relawan';
+          title = terminology.relawanPlural;
           break;
         case 'koordinator':
-          title = 'Koordinator';
+          title = terminology.koordinatorPlural;
           break;
         case 'dapil':
-          title = 'Dapil';
+          title = terminology.dapilPlural;
           break;
         case 'reports':
-          title = 'Reports';
+          title = content.navigation.reports;
           break;
         case 'settings':
-          title = 'Settings';
+          title = content.navigation.settings;
           break;
         case 'import':
-          title = 'Import Data';
+          title = content.navigation.import;
           break;
         case 'export':
-          title = 'Export Data';
+          title = content.navigation.export;
           break;
         default:
           // Capitalize first letter
@@ -78,11 +75,10 @@ export default function Breadcrumb() {
 
       // If it's the last segment, don't make it a link
       if (index === pathSegments.length - 1) {
-        items.push({ title });
+        items.push({ title: <span>{title}</span> });
       } else {
         items.push({
           title: <Link href={currentPath}>{title}</Link>,
-          href: currentPath,
         });
       }
     });

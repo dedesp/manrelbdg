@@ -72,7 +72,7 @@ export function generateExportFilename(type: 'relawan' | 'koordinator' | 'statis
   return `${type}_export_${timestamp}.${format}`
 }
 
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {

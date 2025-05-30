@@ -21,6 +21,7 @@ import {
   PieChartOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
@@ -68,20 +69,23 @@ const mockReportData: ReportData[] = [
 ];
 
 export default function ReportsPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
   const columns: ColumnsType<ReportData> = [
     {
-      title: 'Dapil',
+      title: terminology.dapil,
       dataIndex: 'dapil',
       key: 'dapil',
     },
     {
-      title: 'Koordinator',
+      title: terminology.koordinatorPlural,
       dataIndex: 'koordinator',
       key: 'koordinator',
       align: 'center',
     },
     {
-      title: 'Relawan',
+      title: terminology.relawanPlural,
       dataIndex: 'relawan',
       key: 'relawan',
       align: 'center',
@@ -132,9 +136,11 @@ export default function ReportsPage() {
         {/* Page Header */}
         <div className="flex justify-between items-start">
           <div>
-            <Title level={2} className="mb-2">Reports & Analytics</Title>
+            <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+              {content.pages.reports.title}
+            </Title>
             <p className="text-gray-600">
-              Analisis dan laporan data relawan serta koordinator
+              {content.pages.reports.description}
             </p>
           </div>
           <Space>
@@ -181,7 +187,7 @@ export default function ReportsPage() {
           <Col xs={24} sm={12} lg={6}>
             <Card>
               <Statistic
-                title="Total Relawan"
+                title={`Total ${terminology.relawanPlural}`}
                 value={mockReportData.reduce((sum, item) => sum + item.relawan, 0)}
                 suffix="orang"
                 valueStyle={{ color: '#1677ff' }}

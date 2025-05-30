@@ -21,6 +21,7 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { useContent, useBranding, useTerminology } from '@/hooks/useClientConfig';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -79,9 +80,12 @@ const mockDapilData: DapilData[] = [
 ];
 
 export default function DapilPage() {
+  const content = useContent();
+  const branding = useBranding();
+  const terminology = useTerminology();
   const columns: ColumnsType<DapilData> = [
     {
-      title: 'Dapil',
+      title: terminology.dapil,
       key: 'dapil',
       render: (_, record) => (
         <div className="flex items-center space-x-3">
@@ -117,7 +121,7 @@ export default function DapilPage() {
       ),
     },
     {
-      title: 'Koordinator',
+      title: terminology.koordinatorPlural,
       key: 'koordinator',
       render: (_, record) => (
         <div className="flex items-center space-x-2">
@@ -128,7 +132,7 @@ export default function DapilPage() {
       sorter: (a, b) => a.koordinator - b.koordinator,
     },
     {
-      title: 'Relawan',
+      title: terminology.relawanPlural,
       key: 'relawan',
       render: (_, record) => (
         <div className="flex items-center space-x-2">
@@ -205,17 +209,20 @@ export default function DapilPage() {
         {/* Page Header */}
         <div className="flex justify-between items-start">
           <div>
-            <Title level={2} className="mb-2">Data Dapil</Title>
+            <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+              {content.pages.dapil.title}
+            </Title>
             <p className="text-gray-600">
-              Kelola daerah pemilihan dan pembagian wilayah koordinasi
+              {content.pages.dapil.description}
             </p>
           </div>
           <Button 
             type="primary" 
             icon={<PlusOutlined />}
             onClick={handleAddNew}
+            style={{ backgroundColor: branding.colors.primary, borderColor: branding.colors.primary }}
           >
-            Tambah Dapil
+            {content.pages.dapil.addButtonText}
           </Button>
         </div>
 
@@ -239,7 +246,7 @@ export default function DapilPage() {
           </Card>
           <Card size="small">
             <Statistic
-              title="Total Relawan"
+              title={`Total ${terminology.relawanPlural}`}
               value={mockDapilData.reduce((sum, d) => sum + d.relawan, 0)}
               prefix={<UserOutlined className="text-orange-500" />}
               valueStyle={{ color: '#fa8c16' }}

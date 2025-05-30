@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import type { UploadProps } from 'antd';
+import { useContent, useBranding } from '@/hooks/useClientConfig';
 
 const { Title, Paragraph } = Typography;
 const { Dragger } = Upload;
@@ -89,6 +90,8 @@ const columns: ColumnsType<PreviewData> = [
 ];
 
 export default function ImportPage() {
+  const content = useContent();
+  const branding = useBranding();
   const [currentStep, setCurrentStep] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [fileList, setFileList] = useState<any[]>([]);
@@ -147,9 +150,11 @@ export default function ImportPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <Title level={2} className="mb-2">Import Data</Title>
+          <Title level={2} className="mb-2" style={{ color: branding.colors.primary }}>
+            {content.pages.import.title}
+          </Title>
           <Paragraph className="text-gray-600">
-            Import data relawan, koordinator, atau dapil dari file Excel/CSV
+            {content.pages.import.description}
           </Paragraph>
         </div>
 
