@@ -1,4 +1,6 @@
-import { MainLayout } from '@/components/layout';
+'use client';
+
+import MainLayout from '@/components/layout/MainLayout';
 import { DapilChart, ProgressChart } from '@/components/charts';
 import { 
   Card, 

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import {
   DashboardOutlined,
@@ -47,11 +46,11 @@ const menuItems: MenuItem[] = [
     getItem('Koordinator', '/data/koordinator', <TeamOutlined />),
     getItem('Dapil', '/data/dapil', <EnvironmentOutlined />),
   ]),
+  getItem('Reports & Analytics', '/reports', <BarChartOutlined />),
   getItem('Import/Export', 'import-export', <ImportOutlined />, [
     getItem('Import Data', '/import', <ImportOutlined />),
     getItem('Export Data', '/export', <ExportOutlined />),
   ]),
-  getItem('Reports', '/reports', <BarChartOutlined />),
   getItem('Settings', '/settings', <SettingOutlined />),
 ];
 
@@ -67,6 +66,7 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
 
   // Get selected keys based on current pathname
   const getSelectedKeys = () => {
+    if (pathname === '/dashboard') return ['/dashboard'];
     if (pathname.startsWith('/data/relawan')) return ['/data/relawan'];
     if (pathname.startsWith('/data/koordinator')) return ['/data/koordinator'];
     if (pathname.startsWith('/data/dapil')) return ['/data/dapil'];
@@ -90,12 +90,28 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
       collapsible
       collapsed={collapsed}
       width={250}
-      className="shadow-sm"
+      collapsedWidth={80}
+      className="shadow-sm transition-all duration-300"
+      style={{
+        background: 'linear-gradient(180deg, #001529 0%, #002140 100%)',
+      }}
     >
-      <div className="p-4 flex items-center justify-between">
+      {/* Logo and Collapse Button */}
+      <div className="p-4 flex items-center justify-between border-b border-gray-700">
         {!collapsed && (
-          <div className="text-white font-bold text-lg">
-            MANRELBDG
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">M</span>
+            </div>
+            <div className="text-white">
+              <div className="font-bold text-sm">MANRELBDG</div>
+              <div className="text-xs text-gray-400">Management System</div>
+            </div>
+          </div>
+        )}
+        {collapsed && (
+          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mx-auto">
+            <span className="text-white font-bold text-sm">M</span>
           </div>
         )}
         <Button
@@ -103,6 +119,7 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
           icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           onClick={() => onCollapse(!collapsed)}
           className="text-white hover:text-blue-300"
+          size="small"
         />
       </div>
       
@@ -114,6 +131,9 @@ export default function Sidebar({ collapsed, onCollapse }: SidebarProps) {
         items={menuItems}
         onClick={handleMenuClick}
         className="border-r-0"
+        style={{
+          background: 'transparent',
+        }}
       />
     </Sider>
   );

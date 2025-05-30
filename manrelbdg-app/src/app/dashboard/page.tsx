@@ -1,6 +1,6 @@
 'use client';
 
-import SimpleLayout from '@/components/layout/SimpleLayout';
+import MainLayout from '@/components/layout/MainLayout';
 import DapilChart from '@/components/charts/DynamicDapilChart';
 import ProgressChart from '@/components/charts/DynamicProgressChart';
 import { 
@@ -35,7 +35,7 @@ const dashboardData = {
 
 export default function DashboardPage() {
   return (
-    <SimpleLayout>
+    <MainLayout>
       <div className="space-y-6">{/* remove p-6 since SimpleLayout handles padding */}
         {/* Page Header */}
         <div>
@@ -154,6 +154,6 @@ export default function DashboardPage() {
         </Col>
       </Row>
     </div>
-    </SimpleLayout>
+    </MainLayout>
   );
 }

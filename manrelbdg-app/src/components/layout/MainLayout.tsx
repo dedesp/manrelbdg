@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import Breadcrumb from './Breadcrumb';
 
-const { Content } = Layout;
+const { Content, Footer } = Layout;
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -33,12 +33,17 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <Sidebar collapsed={collapsed} onCollapse={setCollapsed} />
       <Layout>
         <Header collapsed={collapsed} />
-        <Content className="p-6 bg-gray-50">
+        <Content className="p-4 md:p-6 bg-gray-50">
           <Breadcrumb />
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 min-h-[calc(100vh-200px)]">
             {children}
           </div>
         </Content>
+        <Footer className="text-center bg-white border-t">
+          <div className="text-gray-600">
+            MANRELBDG © 2024 - Sistem Manajemen Relawan Bandung
+          </div>
+        </Footer>
       </Layout>
     </Layout>
   );

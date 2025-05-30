@@ -1,4 +1,6 @@
-import { MainLayout } from '@/components/layout';
+'use client';
+
+import MainLayout from '@/components/layout/MainLayout';
 import { 
   Card, 
   Table, 
@@ -12,7 +14,6 @@ import {
 } from 'antd';
 import {
   PlusOutlined,
-  SearchOutlined,
   EditOutlined,
   DeleteOutlined,
   ExportOutlined,

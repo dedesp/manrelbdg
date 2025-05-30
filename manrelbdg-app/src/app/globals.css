@@ -55,3 +55,54 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* MainLayout enhancements */
+.ant-layout-sider-dark {
+  background: linear-gradient(180deg, #001529 0%, #002140 100%);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.ant-menu-dark.ant-menu-inline .ant-menu-item-selected {
+  background-color: rgba(24, 144, 255, 0.2);
+  border-right: 3px solid #1890ff;
+}
+
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Header enhancements */
+.ant-layout-header {
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Content area enhancements */
+.ant-layout-content {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Card hover effects */
+.ant-card {
+  transition: all 0.3s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Button enhancements */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}

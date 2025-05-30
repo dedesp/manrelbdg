@@ -14,10 +14,10 @@ const { Header: AntHeader } = Layout;
 const { Text } = Typography;
 
 interface HeaderProps {
-  collapsed: boolean;
+  collapsed?: boolean;
 }
 
-export default function Header({ collapsed }: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const userMenuItems: MenuProps['items'] = [
     {
       key: 'profile',

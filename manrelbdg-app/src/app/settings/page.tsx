@@ -1,4 +1,6 @@
-import { MainLayout } from '@/components/layout';
+'use client';
+
+import MainLayout from '@/components/layout/MainLayout';
 import { 
   Card, 
   Form, 
@@ -8,7 +10,6 @@ import {
   Select, 
   Typography,
   Divider,
-  Space,
   Upload,
   Avatar,
   notification
@@ -30,6 +31,7 @@ export default function SettingsPage() {
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleProfileSave = (values: any) => {
     console.log('Profile values:', values);
     notification.success({
@@ -38,6 +40,7 @@ export default function SettingsPage() {
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePasswordChange = (values: any) => {
     console.log('Password values:', values);
     notification.success({
