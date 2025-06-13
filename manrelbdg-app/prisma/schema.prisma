@@ -1,0 +1,211 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Management
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(USER)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdRelawan    Relawan[]    @relation("CreatedBy")
+  createdKoordinator Koordinator[] @relation("CreatedBy")
+  auditLogs         AuditLog[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  VIEWER
+}
+
+// Dapil (Daerah Pemilihan)
+model Dapil {
+  id          String   @id @default(uuid())
+  kode        String   @unique
+  nama        String
+  provinsi    String
+  kabupaten   String
+  kecamatan   String[]
+  kelurahan   String[]
+  target      Int      @default(0)
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  relawan     Relawan[]
+  koordinator Koordinator[]
+
+  @@map("dapils")
+}
+
+// Koordinator
+model Koordinator {
+  id          String     @id @default(uuid())
+  kode        String     @unique
+  nama        String
+  nik         String     @unique
+  noHp        String
+  email       String?
+  alamat      String
+  rt          String?
+  rw          String?
+  kelurahan   String
+  kecamatan   String
+  kabupaten   String
+  provinsi    String
+  koordinat   String?    // lat,lng format
+  foto        String?
+  status      StatusAktif @default(AKTIF)
+  catatan     String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  dapilId     String
+  dapil       Dapil      @relation(fields: [dapilId], references: [id])
+  createdById String
+  createdBy   User       @relation("CreatedBy", fields: [createdById], references: [id])
+  relawan     Relawan[]
+
+  @@map("koordinators")
+}
+
+// Relawan
+model Relawan {
+  id           String     @id @default(uuid())
+  kode         String     @unique
+  nama         String
+  nik          String     @unique
+  noHp         String
+  email        String?
+  alamat       String
+  rt           String?
+  rw           String?
+  kelurahan    String
+  kecamatan    String
+  kabupaten    String
+  provinsi     String
+  koordinat    String?    // lat,lng format
+  foto         String?
+  jenisKelamin JenisKelamin?
+  tanggalLahir DateTime?
+  pekerjaan    String?
+  status       StatusAktif @default(AKTIF)
+  catatan      String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  // Relations
+  dapilId       String
+  dapil         Dapil        @relation(fields: [dapilId], references: [id])
+  koordinatorId String?
+  koordinator   Koordinator? @relation(fields: [koordinatorId], references: [id])
+  createdById   String
+  createdBy     User         @relation("CreatedBy", fields: [createdById], references: [id])
+
+  @@map("relawans")
+}
+
+enum StatusAktif {
+  AKTIF
+  TIDAK_AKTIF
+  PENDING
+}
+
+enum JenisKelamin {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+// Dashboard Summary (untuk performa)
+model DashboardSummary {
+  id                String   @id @default(uuid())
+  totalRelawan      Int      @default(0)
+  totalKoordinator  Int      @default(0)
+  totalDapil        Int      @default(0)
+  targetAchievement Float    @default(0)
+  lastUpdated       DateTime @default(now())
+  createdAt         DateTime @default(now())
+
+  @@map("dashboard_summaries")
+}
+
+// Import/Export History
+model ImportHistory {
+  id        String       @id @default(uuid())
+  fileName  String
+  fileSize  Int
+  type      ImportType
+  status    ImportStatus @default(PROCESSING)
+  totalRows Int          @default(0)
+  successRows Int        @default(0)
+  failedRows  Int        @default(0)
+  errors    Json?        // Array of error objects
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@map("import_histories")
+}
+
+enum ImportType {
+  RELAWAN
+  KOORDINATOR
+  DAPIL
+}
+
+enum ImportStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// Audit Log
+model AuditLog {
+  id        String    @id @default(uuid())
+  userId    String
+  action    String    // CREATE, UPDATE, DELETE
+  entity    String    // RELAWAN, KOORDINATOR, DAPIL
+  entityId  String
+  oldData   Json?
+  newData   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime  @default(now())
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+// Settings
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  type      String   @default("string") // string, number, boolean, json
+  category  String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
