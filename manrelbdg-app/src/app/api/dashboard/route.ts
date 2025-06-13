@@ -34,18 +34,28 @@ export async function GET(request: NextRequest) {
       // Status breakdown
       db.relawan.groupBy({
         by: ['status'],
-        _count: { _all: true }
+        _count: {
+          status: true
+        }
       }),
       db.koordinator.groupBy({
         by: ['status'],
-        _count: { _all: true }
+        _count: {
+          status: true
+        }
       }),
       
       // Relawan by Dapil
       db.relawan.groupBy({
         by: ['dapilId'],
-        _count: { _all: true },
-        orderBy: { _count: { _all: 'desc' } },
+        _count: {
+          dapilId: true
+        },
+        orderBy: {
+          _count: {
+            dapilId: 'desc'
+          }
+        },
         take: 10
       }),
       
@@ -112,12 +122,12 @@ export async function GET(request: NextRequest) {
     // Format status data
     const relawanStatusData = relawanByStatus.map(item => ({
       status: item.status,
-      count: item._count._all
+      count: item._count.status
     }))
     
     const koordinatorStatusData = koordinatorByStatus.map(item => ({
       status: item.status,
-      count: item._count._all
+      count: item._count.status
     }))
     
     // Growth data (mock for now, can be implemented with time-series data)
